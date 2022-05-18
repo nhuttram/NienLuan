@@ -1,0 +1,114 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block title %}Khách Hàng - Đơn Hàng {% endblock %}
+{% block css %} 
+<link rel="stylesheet" href="{% static 'css/dangnhap.css' %}" type="text/css">
+<link rel="shortcut icon" type="image/png" href="{% static 'anh/logo-login.png' %}"/>
+{% endblock %}
+{% block urlphancap %} 
+          <li class="breadcrumb-item"><a href="{% url 'index' %}" style="text-decoration: none; color: black;" >Trang Chủ</a></li>
+          <li class="breadcrumb-item"><a href="#" style="text-decoration: none; color: black;" >Đơn Hàng</a></li>
+{% endblock %}
+{% block content %}
+<!-- danh mục và sản phẩm -->
+<div class="container-fluid">
+    <div class="row" style="margin-left: 102.5px;width: 1150px">
+        <div class="col-sm-6">
+            <h4>Đơn Hàng</h4>
+        </div>
+        <div class="col-sm-6">
+            <p style="float: right;">Bạn muốn mua thêm sản phẩm?<a href="{% url 'dangki' %}" style="text-decoration: none">Mua </a> tại đây</p>
+        </div>
+    </div>
+
+    <div class="row" style="border: 2px groove #FFFFFFFF;width: 1150px;margin-left: 102.5px;text-align:center">
+        <div class="col" style=" position: relative;">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Đơn hàng</th>
+                    <th scope="col">Tổng</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Hình thức</th>
+                    <th scope="col">Thanh toán</th>
+                    <th scope="col">Ngày đặt hàng</th>
+                    <th scope="col">Chi tiết</th>
+                   
+                    <th scope="col"> </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for dathang in dathang %}
+                  <tr>
+                   
+                    <td>{{dathang.id}}</td>
+                    <td>{{dathang.tongtien|stringformat:".0f"}}</td>
+                    <td>
+                      {% if dathang.trang_thai_dat_hang == 'chua_xac_nhan' %}
+                      Chưa Xác Nhận
+                      {% elif dathang.trang_thai_dat_hang == 'da_xac_nhan'  %}
+                      Đã Xác Nhận
+                      {% elif dathang.trang_thai_dat_hang == 'da_giao_hang'  %}
+                      Đã Giao Hàng
+                      {% else %}
+                      Đã Hủy Đơn
+                      {% endif %}
+                    </td>
+
+                    <td>
+                      {% if dathang.hinh_thuc == 'truc_tiep' %}
+                        Trực Tiếp
+                      {% else %}
+                        Pay-Pal
+                      {%endif %}
+                    </td>
+                    <td>
+                    {% if dathang.trang_thai == 0 %}
+                      Chưa Thanh Toán
+                    {% else %}
+                      Đã Thanh Toán
+                    {%endif %}
+
+                    </td>
+                    <td>
+                      {{dathang.create_at}}
+                    </td>
+                    <td>
+                   
+                     <a href="{% url 'chitiet_donhang' dathang.id %}" style="text-decoration:none" >Chi tiết đơn hàng</a>
+                     
+                   
+                    </td>
+                    
+                    <td> 
+                      {% if dathang.trang_thai_dat_hang == 'da_xac_nhan' or dathang.trang_thai_dat_hang == 'da_giao_hang' or dathang.trang_thai_dat_hang == 'huy_don' %}
+                          <button disabled type="button" class="btn btn-danger">Hủy Đơn</button>
+                      {% else %}
+                      <a href="{% url 'huydon' dathang.id  %}" ><button  type="button" class="btn btn-danger">Hủy Đơn</button></a>
+                      {%endif %}
+                    </td>
+
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+    </div>
+</div>
+{% if dathang == ''  %}
+<script>
+    alert("Không có đơn hàng!!!");
+    window.location = '/';
+</script>
+{% endif %}
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+
+
+
+    
+{% endblock %}

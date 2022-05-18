@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <title>{% block title %}  {% endblock %}  </title>
+    {% block icon %} {% endblock %}
+    {% block css %} {% endblock %}
+</head>
+<body style="background-color: #DDDDDD">
+    <div class="container-fluid " style = "font-family:courier,arial,helvetica;" >
+        <div class="row">
+            <div class="col col-md-2"  style="text-align: center;">
+                <div style="height: 80px; width: 100%;text-align: center;">
+                    <br>
+                    <span style="font-size:18px " >TmN-Shop Quản Trị</span>
+                </div> 
+                <ul class="list-group" style="font-size:20px;"> 
+                    <li class="list-group-item d-flex justify-content-between align-items-center qttrangchu" style="height: 70px; background-color: #CCCCCC; ">
+                      <a href="{% url 'quantri' %}" style="text-decoration: none;color: black;"> <p style="margin-top: 15px;"> <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                            <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                          </svg> Trang Chủ </p> </a>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center qtloaihang"  style="height: 70px; background-color: #CCCCCC;">
+                      <a href="{% url 'loaihang' %}" style="text-decoration: none;color: black;">  <p style="margin-top: 17px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                              </svg>
+                            Loại Hàng</p> </a>
+                      </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center qtsanpham"  style="height: 70px; background-color: #CCCCCC;">
+                        <a href="{% url 'sanpham' %}" style="text-decoration: none;color: black;">  <p style="margin-top: 17px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
+                            <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+                          </svg>
+                          Sản Phẩm </p> </a>
+              
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center qtdon"  style="height: 70px; background-color: #CCCCCC;">
+                        <a href="{% url 'quantridonhang' %}" style="text-decoration: none;color: black;">  <p style="margin-top: 17px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
+                                <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
+                              </svg>
+                              Đơn Hàng
+                        </p> </a>    
+                      
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center qtkhach"  style="height: 70px; background-color: #CCCCCC;">
+                        <a href="{% url 'quantrikhachhang' %}" style="text-decoration: none;color: black;">   <p  style="margin-top: 15px;"> 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                              </svg>
+                              <span  style=" margin-left: -3px;font-size: 17px;"> Khách Hàng </span>
+                        </p> </a>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center qtgiamia"  style="height: 70px; background-color: #CCCCCC;">
+                        <a href="{% url 'giamgia' %}" style="text-decoration: none;color: black;">    <p  style="margin-top: 15px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-ticket-detailed" viewBox="0 0 16 16">
+                                <path d="M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5Zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5ZM5 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H5Z"/>
+                                <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6V4.5ZM1.5 4a.5.5 0 0 0-.5.5v1.05a2.5 2.5 0 0 1 0 4.9v1.05a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-1.05a2.5 2.5 0 0 1 0-4.9V4.5a.5.5 0 0 0-.5-.5h-13Z"/>
+                              </svg>
+                              Giảm Giá
+                        </p> </a>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center"  style="height: 70px; background-color: #CCCCCC;">
+                       <a style="text-decoration: none;color: #000;" href="{% url 'dangxuat' %}"> <p  style="margin-top: 15px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x-octagon" viewBox="0 0 16 16">
+                                <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353L4.54.146zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1H5.1z"/>
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                              </svg>
+                              Thoát
+                        </p>
+                      </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col col-md-10  ">
+                <div class="container overflow-hidden ">
+                    <div class="row" >
+                      <h3>Xin Chào  {{user.username}}</h3>
+            {% block content %}  
+           
+            {% endblock %}
+            
+            
+        </div>
+
+    
+
+    </div>
+</body>
+</html>

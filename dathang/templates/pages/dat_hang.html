@@ -1,0 +1,255 @@
+{% load static %}
+
+<html>
+  <head>
+
+    <title>Đơn Hàng</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ensures optimal rendering on mobile devices -->
+    <link href= "{% static 'js/jquery-ui-themes-1.8.16/themes/ui-lightness/jquery-ui.css' %}" rel="stylesheet" type="text/css" /> 
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css"> 
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  
+  
+ <!-- Include the PayPal JavaScript SDK; replace "test" with your own sandbox Business account app client ID -->
+ <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+  <body style="background-color: #DDDDDD;">
+   
+    <br>
+    <div class="container card"  style="background-color: #FFFFFF;width: 700px;">
+      <div class="row "  style="background-color: #EEEEEE" >
+        <div class="col ">
+          <h6> Địa Chỉ Giao Hàng</h6>
+        </div>
+        <div class="col" >
+          <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal"  style="float: right;text-decoration: none">Chỉnh sửa</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2">
+          <span> {{khachhang.last_name}} {{khachhang.first_name}}  </span> 
+        </div>
+        <div class="col-sm-4">
+          <span>Số Điện Thoại: {{khachhang.so_dien_thoai}} </span> 
+        </div>
+        <div class="col-sm-6">
+          <span>Gmail: {{khachhang.email}} </span> 
+        </div>
+      </div>
+      <div class="row">
+        &nbsp;&nbsp; <span style="background-color:rgb(255 123 83);width: 75px;border-radius:40%">Địa Chỉ</span> 
+        &nbsp; {{khachhang.dia_chi}}
+       </div>
+       <br>
+
+    </div>
+    <br>
+   
+    <div class="container card"  style="background-color: #FFFFFF;width: 700px;">
+      <div class="row">
+        <div class="col-sm-12">
+          {% for sp_gio in sanpham_gio %}
+            <div class="row"  style="border-bottom: 3px solid #dfd8d8;">
+                <div class="col-sm-3" >
+                  <img src="/static/{{sp_gio.san_pham.anh_san_pham}}" class="img-thumbnail" alt="Lỗi" style="margin-left:-13px;width: 170px;height: 100px;max-width: 170px;max-height: 100px;">
+                </div>
+                
+                <div class="col-sm-6">
+                  <h5>  {{sp_gio.san_pham.ten_san_pham}}</h5>
+                  <span style="display:block;text-overflow: ellipsis;width: 300px;overflow: hidden; white-space: nowrap">  {{sp_gio.san_pham.mo_ta}}</span>
+                </div>
+                <div class="col-sm-1">
+                  <p style="margin-top:55%">{{sp_gio.so_luong}}</p>
+                </div>
+                <div class="col-sm-2">
+                  {% if  sp_gio.san_pham.chitietsanpham1.all %}
+                    {% for khuyen_mai in sp_gio.san_pham.chitietsanpham1.all %}
+                    <span style="text-decoration: line-through;color: red;">{{sp_gio.san_pham.gia}} VNĐ </span>
+                    <br>
+                    <span style="color: #3366CC;">-{{khuyen_mai.khuyen_mai}}% </span>
+                    <br>
+                    <span>{{khuyen_mai.gia_khuyen_mai|stringformat:".0f"}} VNĐ</span>
+                    {% endfor %}
+                    {% else %}
+                    <p style="margin-top:25%">{{sp_gio.san_pham.gia}} VNĐ</p>
+                    {% endif %}
+
+                </div>
+            </div>
+            {% endfor %}
+           
+            <div class="row" style="float: right">
+              {% if tong != 0 %}
+            
+              <span >
+                Vận Chuyển: 25000 VND
+                <br>
+                Tổng Tiền: {{tong|stringformat:".0f"}} VNĐ 
+                <br>
+                Tổng USA: {{tongUSA|stringformat:".2f"}} $
+              </span>  
+              {% endif %}
+            </div>
+            <br> 
+            <br> 
+            <br> 
+            <br>
+            <div class="col"  >
+              <div class="row" >
+                <div class="col-sm-6" >
+                  <a href="{% url 'thanh_toan_truc_tiep' id_gio  %}"><button type="button" class="btn" style="margin-top:25px;float: right;background-color:rgb(245 114 36);color: #FFFFFFFF;">Thanh Toán Trực Tiếp</button> </a>
+                </div>
+                <div class="col-sm-2"  >
+                  <div id="paypal-button-container" style="width: 150px;"></div>
+                </div>
+              </div>
+              
+              
+            </div>
+            </div>
+           
+        </div>
+      </div>
+    </div>
+    <!-- Set up a container element for the button -->
+   
+
+    <script>
+      paypal.Buttons({
+
+        // Sets up the transaction when a payment button is clicked
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: '{{tongUSA|stringformat:".2f"}}' // Can reference variables or functions. Example: `value: document.getElementById('...').value`
+              }
+            }]
+          });
+        },
+
+        // Finalize the transaction after payer approval
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(orderData) {
+            // Successful capture! For dev/demo purposes:
+                console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                var transaction = orderData.purchase_units[0].payments.captures[0];
+                
+                $.ajax({
+                  type: 'POST',
+                  url: "{% url 'thanh_toan' %}",
+                  data: {"id_giohang": {{id_gio}} },
+                  success: function (response) {
+                      // if not valid user, alert the user
+                          alert("Ban Đã Thanh Toán Thành Công"); 
+                          window.location="{% url 'donhang' %}";
+                       
+                  },
+                  error: function (response) {
+                      console.log(response)
+                  }
+              })
+            // When ready to go live, remove the alert and show a success message within this page. For example:
+            // var element = document.getElementById('paypal-button-container');
+            // element.innerHTML = '';
+            // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+            // Or go to another URL:  actions.redirect('thank_you.html');
+          });
+        }
+      }).render('#paypal-button-container');
+
+    </script>
+
+
+    <form method="POST" action ="#" >
+      {% csrf_token %}
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cập Nhật Thông Tin</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+             
+                      <div class="mb-3">
+                          <div class="row">
+                              <div class="col-sm-4">
+                                  <label for="exampleInputEmail1" class="form-label">Email address</label>
+                              </div>
+                              <div class="col-sm-8">
+                                  <input style="width: 70%;" required  type="email" id="email" name="email" value="{{khachhang.email}}" class="form-control"  placeholder="Email"  id="exampleInputEmail1" aria-describedby="emailHelp">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mb-3">
+                          <div class="row">
+                              <div class="col-sm-4">
+                                  <label for="exampleInputPassword1" class="form-label">Số Điện Thoại</label>
+                              </div>
+                              <div class="col-sm-8">
+                                  <input type="phone"  style="width: 70%;" required id="sdt" name="sdt" placeholder="Số Diện Thoại"  value="{{khachhang.so_dien_thoai}}"  class="form-control" >
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mb-3">
+                          <div class="row">
+                              <div class="col-sm-4">
+                                  <label for="exampleInputPassword1"  class="form-label">Địa Chỉ</label>
+                              </div>
+                              <div class="col-sm-8">
+                                  <input class="form-control" required style="width: 70%;" id="diachi" name="diachi"  value="{{khachhang.dia_chi}}"   type="text" placeholder="Địa Chỉ" aria-label="default input example">
+                              </div>
+                          </div>
+                         
+                         
+                      </div>
+                          {% if messages %}
+                          {% for message in messages %}
+                              <script> 
+                                  alert("Bạn Cập Nhật Thông Tin Thành Công");
+                              </script>
+                          {% endfor %}
+                          {% endif %}
+                      
+      
+                          
+                       
+  
+                     
+             
+            
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+        <button type="submit" id="submit" name="submit"  class="btn btn-primary">Cập Nhật</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+  </body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

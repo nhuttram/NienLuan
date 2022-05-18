@@ -1,0 +1,79 @@
+{% extends 'pages/quantri.html' %}
+{% load static %}
+{% block    icon %}<link rel="shortcut icon" type="image/png" href="{% static 'anh/giamgia.png' %}"/> {% endblock %}
+{% block    title %} Giảm Giá {% endblock %} 
+{% block    css %}
+<link rel="stylesheet" href="{% static 'css/qtgiamgia.css' %}" type="text/css">
+{% endblock %}
+{% block    content %}  
+            <p>Giảm Giá Sản Phẩm</p>
+  
+
+        </div>
+        <div class="row gx-2" style="width: 107%;">
+            <table class="table table-bordered border-dark"  style=" width: 97.5%;;margin-left: -20px;background-color:#FFFFFFFF" >
+                <thead>
+                  <tr>
+                    <th scope="col"  style="width: 280px;">Tên sản phẩm</th>
+                    <th scope="col">Ảnh sản phẩm</th>
+                    <th scope="col"  style="width: 170px;">Tên giảm</th>
+                    <th scope="col" style="width: 120px;" >Giảm Giá</th>
+                    <th scope="col"  style="width: 220px;">Giá/ Giảm Giá</th>
+                    <th scope="col"  style="width: 110px;">Chức Năng </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for chitiet in orders %}
+                    
+                  <tr style="font-size: 22px;">
+                   
+                    <td >{{chitiet.san_pham.ten_san_pham}}</td>
+                    <td ><img src="/trangchu/static/{{chitiet.san_pham.anh_san_pham}}" alt="Lỗi"  class="img-thumbnail " style="max-width: 120px; max-height: 80px;"></td>
+                    <td >{{chitiet.ten}}</td>
+                    <td>{{chitiet.khuyen_mai}}%</td>
+                    <td><span style="text-decoration: line-through;color: red;">{{chitiet.san_pham.gia}}</span>/{{chitiet.gia_khuyen_mai|stringformat:".0f"}}đ</td>
+                    
+                    <td>
+                        <a  type="button" class="btn btn-danger" style="width: 50px;" href="{% url 'xoa_giam_gia' chitiet.id  %}" onclick="return xoa()"> XÓA </a>
+                      </td>
+                  </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+              <script>
+                function xoa(){
+                if(confirm('Bạn Có Mún Xóa Giảm Giá?')) {
+                  return true;
+                } else {
+                  return false;
+                }
+                  }
+              </script>
+              <div class="pagination">
+                {% if orders.has_other_pages %}
+                <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                  {% if orders.has_previous %}
+                    <li class="page-item"><a class="page-link"  href="?page={{ orders.previous_page_number }}">Previous</a></li>
+                  {% endif %}
+
+                  {% for i in orders.paginator.page_range %}
+                    {% if orders.number == i %}
+                      <li class="page-item "><a  class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% else %}
+                      <li class="page-item"><a  class="page-link" href="?page={{ i }}">{{ i }}</a></li> 
+                    {% endif %}
+                  {% endfor %}
+
+                  {% if orders.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ orders.next_page_number }}">Next</a></li>
+                  {% endif %}
+                </ul>
+              </nav>
+              {% endif %}
+              </div>
+
+
+        </div>              
+</div>     
+{% endblock %}

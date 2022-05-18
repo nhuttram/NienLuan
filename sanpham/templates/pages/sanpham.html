@@ -1,0 +1,119 @@
+{% extends 'pages/quantri.html' %}
+{% load static %}
+{% block    title %} Sản Phẩm {% endblock %} 
+{% block    icon %}<link rel="shortcut icon" type="image/png" href="{% static 'anh/sanpham.png' %}"/> {% endblock %}
+{% block    css %}
+<link rel="stylesheet" href="{% static 'css/qtsanpham.css' %}" type="text/css">
+{% endblock %}
+{% block    content %}  
+
+            {% if sanpham_list == '' %}
+            <script>
+                alert("Không có sản phẩm cần tìm"); 
+                window.location="{% url 'sanpham' %}";
+            </script>
+            
+            {% endif %}
+      
+            <p>Sản Phẩm</p>
+            <div class="col">
+              <a href="{% url 'them_san_pham' %}" type="button" class="btn btn-success" style="width: 200px;">+ Thêm Sản Phẩm</a>
+
+              <a href="{% url 'xuatfilesp' %}" type="button" class="btn btn-secondary" style="width: 200px;"> Xuất FILE Sản Phẩm</a>
+            </div>
+            <div class="col" >
+              <form action=" " method="POST">
+                {% csrf_token %}
+            <button type="submit" style="float: right;border: none;background-color: transparent;"><svg xmlns="http://www.w3.org/2000/svg"  width="25" height="35" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+            </button>
+            <input style="float: right;width: 200px;margin-right: 10px;" name="tensanpham" id="tensanpham" type="search" class="form-control rounded" placeholder="Tìm Kiếm" aria-label="Search"
+            aria-describedby="search-addon" />
+              </form>
+            </div>
+        </div>
+        <br>
+        <div class="row gx-2" style="width: 105%;" >
+            <table class="table table-bordered border-dark"  style="width: 97.5%;background-color:#FFFFFFFF;">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Ảnh</th>
+                    <th scope="col">Loại</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col" style="width: 95px;">Số Lượng</th>
+                    <th scope="col" >Mô Tả</th>
+                    <th scope="col"  style="width: 135px;">Chức Năng </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for sanpham in orders %}
+                  <tr>
+                    <td>{{sanpham.id}}</td>
+                    <td>{{sanpham.ten_san_pham}}</td>
+                    <td><img src="/trangchu/static/{{sanpham.anh_san_pham}}" alt="Lỗi" style="max-width: 120px; max-height: 100px;"></td>
+                    <td>{{sanpham.loai.loai_ten}}</td>
+                    <td>{{sanpham.gia}}</td>
+                    <td>{{sanpham.so_luong}}</td>
+                    <td>
+                      <div  class="overflow-auto" style="max-height:160px">
+                        <div class="col">
+                           <p class="text-break">
+                            {{sanpham.mo_ta}}
+        
+                            </p> 
+        
+                        </div>
+                    </div>
+                    </td>
+                    <td>
+                        <a type="button" href="{% url 'sua_san_pham' sanpham.id %}" class="btn btn-info" style="width: 50px;"> SỬA </a> 
+                        <a type="button" href="{% url 'xoa_san_pham' sanpham.id %}" class="btn btn-danger" style="width: 50px;" onclick=" return xoa()"> XÓA </a>
+                       
+                        <a type="button" href="{% url 'giam_gia_san_pham' sanpham.id %}" class="btn btn-secondary" style="width: 120px; margin-top: 7px;">Giảm Giá </a>
+                      </td>
+                  </tr>
+
+                
+                    {% endfor %}
+                </tbody>
+              </table>
+              <script>
+                function xoa(){
+                if(confirm('Bạn Có Mún Xóa Sản Phẩm?')) {
+                  return true;
+                } else {
+                  return false;
+                }
+                  }
+              </script>
+              <div class="pagination">
+                {% if orders.has_other_pages %}
+                <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                  {% if orders.has_previous %}
+                    <li class="page-item"><a class="page-link"  href="?page={{ orders.previous_page_number }}">Previous</a></li>
+                  {% endif %}
+
+                  {% for i in orders.paginator.page_range %}
+                    {% if orders.number == i %}
+                      <li class="page-item "><a  class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% else %}
+                      <li class="page-item"><a  class="page-link" href="?page={{ i }}">{{ i }}</a></li> 
+                    {% endif %}
+                  {% endfor %}
+
+                  {% if orders.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ orders.next_page_number }}">Next</a></li>
+                  {% endif %}
+                </ul>
+              </nav>
+              {% endif %}
+              </div>
+
+
+        </div>              
+</div>     
+{% endblock %}

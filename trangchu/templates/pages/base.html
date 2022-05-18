@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/duychuyen.css' %}" type="text/css">
+   
+    <script src=  
+    "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">  
+        </script>  
+        
+        <script src=  
+    "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">  
+        </script>  
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+        <link href=  
+    "{% static 'js/jquery-ui-themes-1.8.16/themes/ui-lightness/jquery-ui.css' %}"
+            rel="stylesheet" type="text/css" />  
+            <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    {% block css %}  
+    
+    {% endblock %}
+   
+    <title>{% block title %} {% endblock %}</title>
+    
+</head>
+<body style="background-color:#EEEEEE; position: relative;	">
+    <!-- head der -->
+    <img src="{% static 'anh/anh1.jpg' %}" alt="Lỗi " class="responsive-img" style="width: 100%; height: 100%">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">TmN Shop</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Trang Chủ</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active spmoi" href="" onclick ="kiemtrasp()">Sản Phẩm Mới</a>
+              </li>
+              <script>
+                function kiemtrasp(){
+                  if('{{request.path}}' == '/trangchu/dangnhap/' || '{{request.path}}' == '/trangchu/dangky/' ){
+                    alert("Ban cần ở trang chủ để thực hiện chức năng này!!!");
+                   
+                  }
+                  else{
+                    $("a.spmoi").prop("href", "#sanpham")
+                  }
+                  
+                }
+                function kiemtradanhmuc(){
+                  if('{{request.path}}' == '/trangchu/dangnhap/' || '{{request.path}}' == '/trangchu/dangky/' ){
+                    alert("Ban cần ở trang chủ để thực hiện chức năng này!!!");
+                  }      
+                }
+              </script>
+
+              <li class="nav-item" onclick ="kiemtradanhmuc()" >
+                <div class="dropdown" >
+                  <a class="btn danhmuc123"   href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    Danh Mục
+                  </a>
+                  <ul class="dropdown-menu ulchug" style="padding: 0;"  aria-labelledby="dropdownMenuLink">
+                    {% for loai in listloaisanphamall %}
+                    <li class="list-group-item danhmucchug"><a href="{% url 'loaisanpham' loai.id %}" style="text-decoration: none; color: black; ">  {{loai.loai_ten }} </a></li>
+                    {% endfor %}
+                </ul>
+                </div> 
+              
+               
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#lienhe">Liên Hệ</a>
+              </li>   
+              &emsp;&emsp;&emsp;
+              <li class="nav-item">
+            <form class="d-flex" method="POST" action="{% url 'timkiem' %}">
+                {% csrf_token %}
+              <input class="form-control me-2" type="search" name="autotim" id="autotim" placeholder="Search" aria-label="Search" style="width: 270px;">
+              <script>
+                $( function() {
+                  $( "#autotim" ).autocomplete({
+                    source:'{% url "index" %}',
+                    minLength: 2
+                  });
+                } );
+                </script>
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form> 
+                </li> 
+              &emsp; &emsp; &emsp;
+                <li class="nav-item" >
+                    <button type="button"  class="btn  position-relative" onclick="window.location.href= '/trangchu/giohang/{{giohang.id}}'" >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-cart4" viewBox="0 0 16 16">
+                            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l.5 2H5V5H3.14zM6 5v2h2V5H6zm3 0v2h2V5H9zm3 0v2h1.36l.5-2H12zm1.11 3H12v2h.61l.5-2zM11 8H9v2h2V8zM8 8H6v2h2V8zM5 8H3.89l.5 2H5V8zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
+                          </svg>
+                          {% if user.is_authenticated %}
+                          <span class="position-absolute top-0 start-95 translate-middle badge rounded-pill bg-danger">
+                              {{tongsanpham_tronggio.tong}}
+                        
+                          {% else %}
+                            
+                          {% endif%}
+                          
+                        </span>
+                      </button>
+                </li>
+             
+
+                <li class="nav-item" style="margin-left: 65px;" >
+                {% if user.username %}
+                <div class="dropdown" style="margin-left: 35px;height: 56px; padding-top: 5px;font-weight:600;line-height: 2;" >
+                    <span class="btn " type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" style="display:block;text-overflow: ellipsis;width: 200px;overflow: hidden; white-space: nowrap">
+                        Xin Chào {{user.first_name}} {{user.last_name}}  
+                    </span>   
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2" style=" text-align: center;">
+                      {% if user.username == 'admin' %}
+                      <li><a class="dropdown-item" href="{% url 'quantri' %}">Trang quản trị</a></li>
+                      <li> <a class="dangxuat" style="text-decoration: none; color: black;" href="{% url 'dangxuat' %}"> Đăng Xuất</a></li>
+                      {% else %}
+                      
+                      <li><a class="dropdown-item" href="{% url 'thongtinkhachhang' %}">Thông Tin</a></li>
+                      <li><a class="dropdown-item" href="{% url 'donhang' %}">Đơn Hàng</a></li>
+
+                      <li><a class="dropdown-item" href="{% url 'doimatkhau' %}">Đổi Mật Khẩu</a></li>
+                      
+                      <li> <a class="dangxuat" style="text-decoration: none; color: black;" href="{% url 'dangxuat' %}"> Đăng Xuất</a></li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                {% else  %}
+                <li class="nav-item" >
+                    <a class="nav-link "  aria-current="page" href="{% url 'dangnhap' %}"> Đăng Nhập</a>
+                  </li>
+                  <li class="nav-item">
+                      <p class="nav-link " aria-current="page" href="#">/</p>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'dangki' %}">Đăng Ký</a>
+                  </li>
+                {% endif %}
+            </li>
+
+               
+            </ul>
+
+          </div>
+        </div>
+    </nav>
+    <div class="card" style="width: 85%;margin-left: 115px;">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb"> 
+                {% block urlphancap %}
+               
+                {% endblock %}
+            </ol>
+          </nav>
+    </div>
+    
+
+    {% block content %}
+    
+   
+    
+    {% endblock %}
+    <br/>
+    <br/>
+   
+    {% comment %} lien he {% endcomment %}
+    <div class="container" id="lienhe" >
+      <div class="row mb-5">
+        <div class="col-12 text-center">
+          <h2 class="text-black h1 site-section-heading">Liên Hệ Với Chúng Tôi</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5 mb-5">
+          <form action="{% url 'email_tudong' %}" method="POST" class="p-4 bg-white"> 
+            {% csrf_token %}   
+            <h2 class="h4 text-black mb-4">Mẫu Liên Hệ</h2> 
+
+            <div class="row form-group">
+              <div class="col-md-6 mb-3 mb-md-0">
+                <label class="text-black" for="fname">Họ &amp; Tên Lót</label>
+                <input type="text" id="fname" name="fname" class="form-control">
+              </div>
+              <div class="col-md-6">
+                <label class="text-black" for="lname">Tên</label>
+                <input type="text" id="lname" name="lname" class="form-control">
+              </div>
+            </div>
+
+            <div class="row form-group">
+              
+              <div class="col-md-12">
+                <label class="text-black" for="email">E-mail</label> 
+                <input type="email" id="email" name="email" class="form-control">
+              </div>
+            </div>
+
+            <div class="row form-group">
+              
+              <div class="col-md-12">
+                <label class="text-black" for="subject">Tiêu Đề</label> 
+                <input type="subject" id="tieude" name="tieude" class="form-control">
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <div class="col-md-12">
+                <label class="text-black" for="message">Tin Nhắn</label> 
+                <textarea name="message" id="message" cols="30" rows="7" class="form-control" placeholder="Viết ghi chú hoặc câu hỏi của bạn ở đây..."></textarea>
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <div class="col-md-12">
+                <input type="submit" value="Gửi Tin Nhắn" class="btn btn-primary btn-md text-white">
+              </div>
+            </div>
+
+
+          </form>
+        </div>
+        <div class="col-md-7">
+          
+          <div class="p-4 mb-2 bg-white">
+            <p class="mb-0 font-weight-bold">Địa Chỉ</p>
+            <p class="mb-4">Hẻm 138/29/9 Trần Hưng Đạo, Ninh Kiều Cần Thơ </p>
+            <p class="mb-0 font-weight-bold">ĐT Liên Hệ</p>
+            <p class="mb-4"><a href="#" style="color: #32dbc6;">+0921 872 838</a></p>
+            <p class="mb-0 font-weight-bold">Địa Chỉ E-mail</p>
+            <p class="mb-0"><a href="#" style="color: #32dbc6;">nhutb1809386@student.ctu.edu.vn</a></p>
+            <br/>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4284.32291074163!2d105.77204483119857!3d10.038156204057172!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a08819672a32f7%3A0xa4235100be9d0dd7!2zMTM4LzI5LzkgVHLhuqduIEjGsG5nIMSQ4bqhbywgQW4gUGjDuiwgTmluaCBLaeG7gXUsIEPhuqduIFRoxqEsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1649077667436!5m2!1svi!2s" width="600" height="260" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          
+          
+        </div>
+      </div>
+    </div>
+    <br/><br/><br/><br/><br/><br/><br/><br/>
+    <div class="foorter"  style="background-color:  #FFFFFF;" >
+        <div class="container">
+          <br/>
+            <div class="row" >
+                <div class="col-md-3">
+                    <div class="row">
+                        <div  class="col col-sm-3">
+                            <img src="{% static 'anh/freeship.jpg'%}" alt="Lỗi Ảnh" style="width: 55px;">
+                        </div>
+                        <div  class="col">
+                            <span>
+                                FREE SHIPPING <br>
+                                Miễn phí vận chuyển cho đơn trên 250000 VNĐ
+                                </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row">
+                        <div  class="col col-sm-3">
+                            <img src="{% static 'anh/dongho.png'%}" alt="Lỗi Ảnh" style="width: 55px;">
+                        </div>
+                        <div  class="col">
+                            <span>
+                                GIAO HÀNG ĐÚNG GIỜ <br>
+                                Cam kết chuyển hàng nhanh nhất
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row">
+                        <div  class="col col-sm-3">
+                            <img src="{% static 'anh/giaohang.jpg'%}" alt="Lỗi Ảnh" style="width: 55px;">
+                        </div>
+                        <div  class="col">
+                            <span>
+                               CHECK ĐƠN NHANH 
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row">
+                        <div  class="col col-sm-3">
+                            <img src="{% static 'anh/hotro.png'%}" alt="Lỗi Ảnh" style="width: 55px;">
+                        </div>
+                        <div  class="col">
+                            <span>
+                               HỔ TRỢ NHANH CHÓNG
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="row"> 
+              <div class="col-md-12">
+                <div class="border-top pt-5">
+                <p style="text-align:center; color: #000000; font-weight:700">
+                Copyright © 2022 All rights reserved | This template is made with <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-heart-fill" viewBox="0 0 16 16">
+                  <path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9.06 9.06 0 0 0 8 15Zm0-9.007c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"/>
+                </svg> by <a href="https://www.facebook.com/TramMinhNhut/" target="_blank">Trầm Minh Nhựt</a>
+                </p>
+                </div>
+              </div>
+          </div>
+        </div>
+        
+
+    </div>
+
+    <div id="backtop">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+      </svg>
+    </div>
+
+  
+    <script>
+       $(document).ready(function() {
+          $(window).scroll(function(){
+              if ($(this).scrollTop()) {
+                $('#backtop').fadeIn();
+              } else {
+                $('#backtop').fadeCut();
+              }
+       });
+
+       $("#backtop").click(function(){
+         $('html , body').animate({
+           scrollTop : 0
+          },
+            700);
+       });
+      });
+    </script>
+
+    
+   
+</body>
+</html>

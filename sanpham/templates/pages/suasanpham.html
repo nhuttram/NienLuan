@@ -1,0 +1,56 @@
+{% extends 'pages/quantri.html' %}
+{% load static %}
+{% block    title %} Trang Quản Trị {% endblock %} 
+{% block    css %}
+<link rel="stylesheet" href="{% static 'css/qtsanpham.css' %}" type="text/css">
+{% endblock %}
+{% block    content %}  
+        <div class="row" >
+            <h3>Xin Chào Bạn</h3>
+            <p>Thêm Sản Phẩm</p>
+        </div>
+        <div class="row g-1 card">
+            <form  class="row g-2" action="" class="form-contact" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                    <div class="col-6">
+                    <label for="inputAddress" class="form-label">Tên Sản Phẩm</label>
+                    <input type="text" class="form-control" value="{{san_pham.ten_san_pham}}" name="tensanpham" placeholder="tên sản phẩm">
+                    </div>
+                    <div class="col-6">
+                        <label for="inputAddress" class="form-label">Loại Sản Phẩm</label>
+                        <select name="loai" class="form-select">
+                            <option selected value={{san_pham.loai.id}}> {{san_pham.loai.loai_ten}} </option>
+                            {% for loaihang in loai %}
+                            <option value={{loaihang.id}}> {{loaihang.loai_ten}} </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                  <div class="col-md-6">
+                    <label for="inputEmail4" class="form-label">Số Lượng</label>
+                    <input type="number" value="{{san_pham.so_luong}}" class="form-control" name="soluong">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputPassword4" class="form-label">Giá</label>
+                    <input type="number" value="{{san_pham.gia}}"  class="form-control" name="gia">
+                  </div>
+                  
+                  <div class="col-6">
+                    <label for="inputAddress2" class="form-label">Ảnh Sản Phẩm</label>
+                    <input type="file" class="form-control" value="{{san_pham.anh_san_pham}}" name="anh" placeholder="Apartment, studio, or floor">
+
+                    <input type="text"  class="form-control" value="{{san_pham.anh_san_pham}}" name="anh1" >
+                  </div>
+                  <div  class="col-6">
+                    <img src="/trangchu/static/{{san_pham.anh_san_pham}}" alt=" Lỗi" style="max-width: 150px;max-height: 200px;">
+                  </div>
+                  <div class="col-md-12">
+                    <label for="inputPassword4" class="form-label">Mô Tả</label>
+                    <textarea type="textarea" rows="5" class="form-control" name="mota">{{san_pham.mo_ta}} </textarea>
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                  </div>
+            </form> 
+        </div>              
+</div>     
+{% endblock %}

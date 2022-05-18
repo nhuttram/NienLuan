@@ -1,0 +1,135 @@
+{% extends 'pages/quantri.html' %}
+{% load static %}
+{% block    title %} Trang Quản Trị {% endblock %} 
+{% block    icon %}<link rel="shortcut icon" type="image/png" href="{% static 'anh/trangchu.png' %}"/> {% endblock %}
+
+
+{% block    css %}
+<link rel="stylesheet" href="{% static 'css/trangchuquantri.css' %}" type="text/css">
+{% endblock %}
+{% block    content %}  
+
+            <p>Một Số Thông Tin Trang Web Thu Thập</p>
+        </div>
+        <div class="row gx-2"  >
+          <div class="col">
+                <div class=" border bg-light card">
+                    <div class="row" style="height: 130px;">
+                        <div class="col col-sm-9">
+                            <h4 style="font-weight:600"> Danh Thu </h4>
+                            <p> Tổng</p>
+                           <p style="float: right;color:	#FF9900" >{{danhthu.danhthu|stringformat:".0f"}}đ</p>
+                        </div>
+                        <div class="col col-sm-3" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-file-earmark-bar-graph" viewBox="0 0 16 16" style="margin-top: 35px " >
+                                <path d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v6zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1z"/>
+                                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
+                              </svg>
+                        </div>
+                    </div>
+                </div>
+          </div>
+          <div class="col" >
+                <div class=" border bg-light card">
+                    <div class="row" style="height: 130px;">
+                        <div class="col  col-sm-9">
+                            <h4 style="font-weight:600"> Đơn Hàng </h4>
+                            <p>Tổng số đơn</p>
+                           <span style="float: right;color:#FF6600" >{{sodon.sodon}} </span>
+                        </div>
+                        <div class="col  col-sm-3">
+                            <img src="{% static 'anh/donhang.png' %}" alt="Lỗi" style="width: 60px;height: 60px;margin-top: 25px;">
+                        </div>
+                    </div>
+
+                </div>
+          </div>
+          <div class="col">
+                <div class=" border bg-light card" style="height: 500px;font-weight:600 " >
+                    Thông Báo
+                    <div>
+                      <ul style="list-style-type: circle;">
+                          {% for donhang in donhang%}
+                          {% if donhang.trang_thai_dat_hang == 'huy_don' %}
+                          <li style="color:	red">Đơn {{donhang.id}} đã bị hủy: {{donhang.update_at}}  </li>
+                          {% else %}
+                          <li style="color:	#00CC00">Đơn {{donhang.id}} đặt lúc: {{donhang.create_at}} </li>
+                          {% endif %}
+                      
+                          {% endfor %}
+                        </ul>
+                      
+                      
+                    </div>
+                </div>
+                
+          </div>
+          
+
+
+        </div>
+      </div>
+      <br>
+        <div class="accordion accordion-flush card" id="accordionFlushExample" style="width: 64%; margin-left: 23px; margin-top: -370px">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  Các Đơn Hàng Chưa Được Xác Nhận
+                </button>
+              </h2>
+              <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                
+                  <ul style="list-style-type: square;">
+                    {% for donhangchuaxacnhan in donhangchuaxacnhan%} 
+                   <a href="{% url 'quantridonhang' %}" style="text-decoration:none; color:#000000;font-weight:600"><li>Đơn {{donhangchuaxacnhan.id}} chưa được xác nhận</li></a> 
+
+                    {%endfor%}
+                    </ul>
+
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  Đơn Hàng Đã Thanh Toán Bằng PayPal
+                </button>
+              </h2>
+              <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                  
+                  <ul style="list-style-type: square;">
+                    {% for donhangthanhtoanpaypal in donhangthanhtoanpaypal%}
+                    <li>Đơn {{donhangthanhtoanpaypal.id}} đã được thanh toán thông qua Pay-pal</li>
+
+                    {%endfor%}
+                    </ul>
+
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                  Sản Phẩm Hết Hàng
+                </button>
+              </h2>
+              <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                <br/>
+                <ul style="list-style-type: square;">
+                   {% for sanphamkho in sanphamkho%}
+                  <li>Sản phẩm {{sanphamkho.ten_san_pham}} còn ít hơn 3 sản phẩm </li>
+
+                  {%endfor%}
+                  </ul>
+
+               
+               
+              </div>
+            </div>
+        </div>
+       
+                    
+</div>     
+{% endblock %}

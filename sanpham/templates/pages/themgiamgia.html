@@ -1,0 +1,43 @@
+{% extends 'pages/quantri.html' %}
+{% load static %}
+{% block    title %}Thêm Giảm Giá {% endblock %} 
+{% block    icon %}<link rel="shortcut icon" type="image/png" href="{% static 'anh/giamgia.png' %}"/> {% endblock %}
+{% block    css %}
+<link rel="stylesheet" href="{% static 'css/qtsanpham.css' %}" type="text/css">
+{% endblock %}
+{% block    content %}  
+            <p>Thêm Giảm Giá</p>
+        </div>
+        <div class="row g-1 card" style="height: 500px;width: 1050px;font-weight:600">
+            <form  class="row g-2" action="" class="form-contact" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                    <div class="col-12" >
+                    <label for="inputAddress" class="form-label">Tên Sản Phẩm</label>
+                    <input type="text" readonly  class="form-control" value="{{san_pham.ten_san_pham}}" name="tensanpham" placeholder="tên sản phẩm">
+                    <br/>
+                    </div>
+                    
+                    <div class="col-6" >
+                    <label for="inputAddress" class="form-label">Tên Giảm Giá</label>
+                    <input required type="text"   class="form-control"  name="tengiamgia" value="{{id_giamgia.ten}}"  placeholder="Tên giảm giá">
+                    <br/>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="inputPassword4" class="form-label">Giá Hiện Tại</label>
+                        <input type="number" readonly   value="{{san_pham.gia}}"  class="form-control" name="gia"> 
+                        <br/>
+                    </div>
+                  <div class="col-md-6" >
+                    <label for="inputPassword4" class="form-label">Giảm Giá(Tính Theo %)</label>
+                    <input style="color: red;"   type="number" required   min='0' max='99'  class="form-control" name="giamgia" value="{{id_giamgia.khuyen_mai}}"> 
+                    <br/>
+                  </div>
+                  
+                 
+                  <div class="col-12">
+                    <button type="submit" style="width: 300px;color: #000000;" class="btn btn-primary">Lưu</button>
+                  </div>
+            </form> 
+        </div>              
+</div>     
+{% endblock %}

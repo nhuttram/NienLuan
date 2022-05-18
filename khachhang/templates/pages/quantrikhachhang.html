@@ -1,0 +1,55 @@
+{% extends 'pages/quantri.html' %}
+{% load static %}
+{% block    title %} Trang Quản Trị {% endblock %} 
+{% block    icon %}<link rel="shortcut icon" type="image/png" href="{% static 'anh/khachang.jpg' %}"/> {% endblock %}
+{% block    css %}
+<link rel="stylesheet" href="{% static 'css/qtkhachhang.css' %}" type="text/css">
+{% endblock %}
+{% block  content %}  
+            <p>Khách Hàng</p>
+        </div>
+        <div class="row gx-2">
+            <table class="table table-bordered border-dark" style="background-color:#FFFFFFFF;">
+                <thead>
+                  <tr>
+                    
+                    <th scope="col" style="width: 125px;">Tên Đăng Nhập</th>
+                    <th scope="col">Địa chỉ</th>
+                    <th scope="col" style="width: 95px;">Phone</th>
+                    <th scope="col" style="width: 275px;">email</th>
+                    <th scope="col"  style="width: 250px;">Login cuối cùng</th>
+                    <th scope="col"  style="width: 35px;" > </th>
+                   
+                  </tr>
+                  {% for khachhang in khachhang %}
+                </thead>
+                <tr>
+                 
+                  <th scope="col" id="tenkh">{{khachhang.username}}</th>
+                  <th scope="col">{{khachhang.dia_chi}}</th>
+                  <th scope="col">{{khachhang.so_dien_thoai}}</th>
+                  <th scope="col">{{khachhang.email}}</th>
+                  <th scope="col">{{khachhang.last_login}}</th>
+
+                  <th scope="col" ><a href="{% url 'quantrixoakhachhang' khachhang.id  %}" style="color: red;" onclick=" return xoa()"> Xóa</a> </th>
+                 
+                </tr>
+              </thead>
+              {% endfor %}
+
+                <tbody>
+                  
+                </tbody>
+              </table>
+        </div>              
+</div>     
+<script>
+  function xoa(){  
+  if(confirm('Bạn Có Mún Xóa Khách hàng Này?')) {
+    return true;
+  } else {
+    return false;
+  }
+    }
+</script>
+{% endblock %}

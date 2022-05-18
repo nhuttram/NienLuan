@@ -1,0 +1,63 @@
+{% extends 'pages/quantri.html' %}
+{% load static %}
+{% block    title %} Loại Hàng {% endblock %} 
+{% block    icon %}<link rel="shortcut icon" type="image/png" href="{% static 'anh/loaihang.jpg' %}"/> {% endblock %}
+{% block    css %}
+<link rel="stylesheet" href="{% static 'css/qtloai.css' %}" type="text/css">
+{% endblock %}
+{% block    content %}  
+       
+            <p>Loại Hàng</p>
+            
+        </div>
+        <div class="row" style="background-color:#FFFFFFFF">
+            <table class="table" style="width: 500px;">
+                <thead>
+                  <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col" >Loại Hàng</th>
+                    <th scope="col" style="width: 150px;">Trạng Thái</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for loaihang in loai %}
+                  <tr>
+                    <td>  {{loaihang.id}}</td>
+                    <td> {{loaihang.loai_ten}}</td>
+                    <td> {{loaihang.trang_thai}}</td>
+                    <td>
+                      <a type="button" href="{% url 'sua_loai' loaihang.id  %}" class="btn btn-info" style="width: 50px;"> SỬA </a> 
+                      <a type="button" href="{% url 'xoa_loai' loaihang.id  %}" class="btn btn-danger" style="width: 50px;" onclick="return xoa()"> XÓA </a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                <tr>
+                    <td colspan="3">
+                        <a href="/themloaihang" type="button" class="btn btn-success" style="width: 150px;">+ Thêm Loại</a>
+                      
+                        
+                    </td>
+                </tr>
+              </table>
+        </div>
+        <script>
+          function xoa(){
+          if(confirm('Bạn Có Mún Xóa Loại Hàng?')) {
+            return true;
+          } else {
+            return false;
+          }
+            }
+        </script>
+       
+
+
+
+
+
+
+
+      </div>                 
+</div>     
+{% endblock %}

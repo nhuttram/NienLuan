@@ -1,0 +1,123 @@
+{% extends 'pages/quantri.html' %}
+{% load static %}
+{% block    title %} Trang Quản Trị-Đơn Hàng {% endblock %} 
+{% block    icon %}<link rel="shortcut icon" type="image/png" href="{% static 'anh/donhangicon.png' %}"/>
+{% endblock %}
+{% block    css %}
+<link rel="stylesheet" href="{% static 'css/qtdon.css' %}" type="text/css">
+{% endblock %}
+{% block    content %}  
+            <span>Đơn Hàng -------------------- Thanh toán = 0: Chưa thanh toán ---------- Thanh toán = 1: đã thanh toán</span>
+        </div>
+        <br>
+        <div class="row gx-2" style="width: 105%;">
+            <table class="table table-bordered border-dark" style="width: 99.5%;background-color:#FFFFFFFF;margin-left: -20px;">
+                <thead>
+                  <tr>
+                    <th scope="col">Đơn</th>
+                    <th scope="col">Trạng thái-Đơn</th>
+                    <th scope="col">Hình thức</th>
+                    <th scope="col">Thanh toán</th>
+                    <th scope="col">Ngày đặt hàng</th>
+                    <th scope="col">Ngày update đơn</th>
+                    <th scope="col">Chức năng</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 
+                    {% for dathang in orders %}
+                  <tr>
+                  <form action="{% url 'quantridonhang' %}" method="POST" > 
+                    {% csrf_token %}
+                    <input type="text" value="{{dathang.id}}" name="id_don" id="id_don" hidden>
+                    <td>{{dathang.id}}</td>
+
+                    <td>
+                      <select onchange="this.form.submit()" id="trang_thai_dat_hang"  name="trang_thai_dat_hang" class="form-select" aria-label="Default select example" style="font-weight:650;width: 180px;">
+                        {% if dathang.trang_thai_dat_hang == 'chua_xac_nhan'  %}
+                        <option Disabled  selected>Chưa Xác Nhận</option>
+                        <option value="1">Xác Nhận</option>
+                        <option value="2">Đã Giao Hàng</option>
+                        <option value="3" >Hủy Đơn</option>
+                        {% endif %}
+                        {% if dathang.trang_thai_dat_hang == 'da_xac_nhan'  %}
+                        <option Disabled  >Chưa Xác Nhận</option>
+                        <option selected Disabled value="1">Xác Nhận</option>
+                        <option value="2">Đã Giao Hàng</option>
+                        <option Disabled value="3" >Hủy Đơn</option>
+                        {% endif %}
+                        {% if dathang.trang_thai_dat_hang == 'da_giao_hang'  %}
+                        <option Disabled  >Chưa Xác Nhận</option>
+                        <option  Disabled value="1">Xác Nhận</option>
+                        <option  selected Disabled value="2">Đã Giao Hàng</option>
+                        <option Disabled value="2" >Hủy Đơn</option>
+                        {% endif %}
+                        {% if dathang.trang_thai_dat_hang == 'huy_don'  %}
+                        <option Disabled  >Chưa Xác Nhận</option>
+                        <option  Disabled value="1">Xác Nhận</option>
+                        <option   Disabled value="2">Đã Giao Hàng</option>
+                        <option selected Disabled value="3" >Hủy Đơn</option>
+                        {% endif %}
+                      </select>
+
+                    </td>
+                    <td>
+                      {% if dathang.hinh_thuc == 'truc_tiep' %}
+                      Trực Tiếp 
+                      {% else %}
+                      PayPal
+                      {%endif%}
+                    </td>
+                    <td>{{dathang.trang_thai}}</td>
+                    <td>{{dathang.create_at}}</td>
+                    <td>{{dathang.update_at}}</td>
+                    <td> 
+                      {% if dathang.trang_thai_dat_hang == 'huy_don'  %}
+                     <a href="{% url 'quantrixoadon' dathang.id %}"> <button type="button" onclick="return xoa()" style="width: 80px;" class="btn btn-danger">Xóa</button> </a>
+                      {%else %}
+                      <a href="{% url 'quantrichitietdon' dathang.id %}" target="_blank" rel="noopener noreferrer"> Chi tiết</a>
+                      {% endif %}
+                  </form>
+                  </tr>
+                  {% endfor %}
+                   
+                </tbody>
+              </table>
+              <div class="pagination">
+                {% if orders.has_other_pages %}
+                <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                  {% if orders.has_previous %}
+                    <li class="page-item"><a class="page-link"  href="?page={{ orders.previous_page_number }}">Previous</a></li>
+                  {% endif %}
+
+                  {% for i in orders.paginator.page_range %}
+                    {% if orders.number == i %}
+                      <li class="page-item "><a  class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% else %}
+                      <li class="page-item"><a  class="page-link" href="?page={{ i }}">{{ i }}</a></li> 
+                    {% endif %}
+                  {% endfor %}
+
+                  {% if orders.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ orders.next_page_number }}">Next</a></li>
+                  {% endif %}
+                </ul>
+              </nav>
+              {% endif %}
+              </div>
+        </div>              
+</div>     
+
+<script>
+  function xoa(){
+  if(confirm('Bạn Có Mún Xóa Đơn Hàng?')) {
+    return true;
+  } else {
+    return false;
+  }
+    }
+</script>
+
+
+{% endblock %}

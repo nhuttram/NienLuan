@@ -1,0 +1,183 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block css %}  
+<link rel="shortcut icon" type="image/png" href="{% static 'anh/cart-icon.png' %}"/>
+<link rel="stylesheet" href="{% static 'css/giohang.css' %}" type="text/css">
+{% endblock %}
+{% block title %} Giỏ Hàng {% endblock %}
+
+{% block urlphancap %} 
+          <li class="breadcrumb-item"><a href="/" style="text-decoration: none; color: black;" >Trang Chủ</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'giohang' giohang.id %}" style="text-decoration: none; color: black;" >Giỏ Hàng</a></li>
+{% endblock %}
+{% block content %}
+<!-- danh mục và sản phẩm -->
+<div class="container-fluid">
+   
+    
+    <div class="row" style="margin-left: 102.5px;margin-top:10px">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <script>
+                {% if message.tags %}  alert("{{ message }}") {% endif %}       
+            </script> 
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        
+        <div class="col card col-sm-7" style="background-color: #fff;">
+          
+            {% for sp_gio in sanpham_gio %}
+      
+            <form action="{% url 'giohang'  giohang.id  %}" method="POST">
+                {% csrf_token %}
+            <div class="row" style="border-bottom: 2px solid #dfd8d8;">
+                <input type="text" name="id_giohang" id="id_giohang" value="{{sp_gio.gio_hang.id}}" hidden  >
+                <input type="text" name="idsanphamtronggio" id="idsanphamtronggio" value="{{sp_gio.san_pham.id}}" hidden >
+                <div class="col-sm-3 card" >
+                    <img src="/static/{{sp_gio.san_pham.anh_san_pham}}" class="img-thumbnail" alt="Lỗi" style="width: 170px;height: 100px;max-width: 170px;max-height: 100px;">
+                </div>
+                <div class="col-sm-5" >
+                    <h6 style="font-weight:650">  {{sp_gio.san_pham.ten_san_pham}}</h6>
+                   
+                </div>
+                <div class="col-sm-1" style="width: 130px;font-weight:500;"  >
+                    {% if  sp_gio.san_pham.chitietsanpham1.all %}
+                    {% for khuyen_mai in sp_gio.san_pham.chitietsanpham1.all %}
+                    <span>{{khuyen_mai.gia_khuyen_mai|stringformat:".0f"}}  <span class="badge bg-secondary">đ</span> </span>
+                    
+                    <br>
+                    <span style="color: #3366CC;border: 1px solid #3366CC;border-radius:8px ">-{{khuyen_mai.khuyen_mai}}% </span>
+                    <br>
+                    <span style="text-decoration: line-through;color: red;">{{sp_gio.san_pham.gia}} đ </span>
+                    {% endfor %}
+                    {% else %}
+                    <p style="margin-top:25%">{{sp_gio.san_pham.gia}}<span class="badge bg-secondary">đ</span></p>
+                    {% endif %}
+
+                </div>                        
+                <div class="col-sm-1" >
+                    <div class="col" style="margin-left:10px;"> 
+                        <input type="number" id="soluong" name="soluong" min="1" onchange="this.form.submit()" style="margin-top:25px;width: 80px;text-align: center;" value="{{sp_gio.so_luong}}">
+                    </div>
+                    
+                    <div class="col" style="margin-left:60px;">
+                        <a  href="{% url 'xoagio' sp_gio.id sp_gio.san_pham.id %}" onclick="return kiemtraxoa()"> <span > <svg  style="color: #FF0000;" xmlns="http://www.w3.org/2000/svg" width="25" height="20" style="margin-top:-45px;" fill="currentColor" class="bi bi-trash xoa" viewBox="0 0 12 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                          </svg>
+                        </span>
+                        </a>
+                        <script>
+                            function kiemtraxoa(){
+                                var kiemtraxoa = window.confirm("Bạn Có Mún Xóa Sản Phẩm?");
+                                if(kiemtraxoa){
+                                    return true;
+                                }
+                                else {
+                                    return false;
+                                }
+                            }
+                        </script>
+
+                    </div>
+                    
+                  
+                   
+                </div>
+                
+            </form>
+            </div>
+                 
+            {% endfor %} 
+            
+        </div>
+
+        <div class="col col-sm-4 card" style="height: 370px;margin-left: 20px; ">
+            <div class="row"> 
+                <div class="col">
+                    <h6>Địa Điểm</h6>
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                        <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+                        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                      </svg> 	Cần Thơ, Quận Ninh Kiều, Phường An Cư</span>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <h5>Thông tin đơn hàng</h5>
+                <div  class="col">
+                    <span>Tạm tính ({{tong_spgio.so_luong__sum}} sản phẩm) </span> 
+                    <span style="float: right;"> {{ kqtongtien|stringformat:".0f" }} VNĐ</span>
+                </div>
+            </div>
+            <div  class="row">
+                    <div  class="col">
+                    <span>Phí giao hàng </span> 
+                    <span style="float: right;"> 25000 VNĐ </span>
+                </div>
+            </div>
+        <hr  width="100%" size="7px" align="center" />
+            <div  class="row">
+                <div  class="col">
+                <span style="float: right;"> Đã bao gồm VAT (nếu có) </span>
+                </div>
+            </div>
+               
+        <!-- giảm giá -->
+      
+        {% if laysanpham_giamgia %}
+            <div  class="row">
+                    <div  class="col">
+                       {{laysanpham_giamgia.tong}} 
+                    </div>   
+                  
+            </div>  
+        {% endif %}
+            
+            <div  class="row">
+                <div  class="col">
+                <span>Tổng cộng </span> 
+                {% if tong != 0 %}
+                <span style="float: right;">{{tong|stringformat:".0f"}} VNĐ </span>  
+                {% endif %}
+                </div>   
+            </div>
+            {% if tong_giam != 0 %}
+            <div  class="row">
+                <div  class="col">
+                <span>Giảm giá</span> 
+                
+                <span style="float: right;"> {{tong_giam}} </span>  
+               
+                </div>   
+            </div>
+            {% endif %}
+
+            
+        <br/>
+       
+        <div  class="row">
+                <div  class="col" style="text-align: center;">
+                    <a href="{% url 'dat_hang' giohang.id %}">    <button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="width: 80%;background-color: #f57224;text-align: center;color: antiquewhite;">XÁC NHẬN GIỎ HÀNG</button> </a>
+                </div>        
+        </div>
+   
+        </div>
+      </div>
+</div>
+
+  
+  </div>
+
+  {% comment %} kiem tra gio hang rong {% endcomment %}
+  {% if tongsanpham_tronggio.tong == 0  %}
+    <script>
+        alert("Không có sản phẩm trong giỏ hàng!!!");
+        window.location = '/';
+    </script>
+  {% endif %}
+    
+{% endblock %}

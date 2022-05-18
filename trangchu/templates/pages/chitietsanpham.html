@@ -1,0 +1,231 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block css %}  
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/sanpham.css' %}" type="text/css">
+<link rel="shortcut icon" type="image/png" href="{% static 'anh/trangchu.png' %}"/>
+{% endblock %}
+
+{% block title %} Chi Tiết Sản Phẩm {% endblock %}
+{% block urlphancap %} 
+          <li class="breadcrumb-item"><a href="{% url 'index' %}" style="text-decoration: none; color: black;" >Trang Chủ</a></li>
+          <li class="breadcrumb-item"><a href="#" style="text-decoration: none; color: black;" > Chi Tiết Sản Phẩm</a></li>
+          <li class="breadcrumb-item"><a href="#" style="text-decoration: none; color: black;" >{% for sp in sanphamchitiet %}{{sp.ten_san_pham}} {% endfor %}</a></li>
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    {% for sp in sanphamchitiet %}
+    <form action="{% url 'muasanpham' sp.id %}" method="POST"  onsubmit="return kiemtra()"> 
+        {% csrf_token %}
+    <div class="row " style="margin-left: 155.5px;background-color: #FFFFFF;width: 1000px;">
+        <div class="col col-sm-4"  >
+           <img  class="img-thumbnail"  src="/static/{{sp.anh_san_pham}}" alt="Lỗi" style="width: 320px;height: 300px; max-width: 400px; max-height: 300px;">
+        </div>
+        <div class="col col-sm-3" >
+            <div class="row" style="max-height: 75px;height: 75px">
+                <div class="col">
+                    <h5 style="font-size: 20px;">{{sp.ten_san_pham}}</h5>
+                </div>
+            </div> 
+            <div class="chitietgia" style="max-height: 175px; height: 170px;">
+            <div class="row" >
+                <div class="col-12">
+                    {% if sp.chitietsanpham1.all %}
+                    {% for chitietsanpham in sp.chitietsanpham1.all %}
+                    {% if chitietsanpham.khuyen_mai != None   %}
+                    <span style="color:#006241">Giảm giá: {{chitietsanpham.khuyen_mai}}%</span> <br/><br/>
+                    <span> Giá: <span style="text-decoration: line-through; color: red;" >{{sp.gia}}đ </span>&nbsp;-><span>{{chitietsanpham.gia_khuyen_mai|stringformat:".0f" }}đ </span></span>
+                    <br/><br/>
+                    {% endif %}
+                    {% endfor %} 
+
+                    {% else %}
+                    <br/>
+                    
+                    <span> Giá: <span >{{sp.gia}} đ </span>  
+                    <br/><br/>
+                    {% endif %} 
+                </div>
+                    <div class="col-6">
+                        {% if kho != 0 %}
+                        <span>Kho: {{kho}} cái</span>
+                        {%else%}
+                        <span style="color: red;">Hết hàng</span>
+                        {% endif %}
+                       
+                    </div>
+                    <div class="col-6">
+                        {% if kho != 0 %}
+                        <input required  type="number" name="soluong" id="soluong"  onkeyup="if(parseInt(this.value)>'{{kho}}'){ this.value ='{{kho}}'; return false; }" value="1" min="1" max="{{kho}}" style="width: 75px; text-align: center;">
+                        {%else%}
+                        <input  required type="number" disabled name="soluong" id="soluong" value="0" style="width: 75px; text-align: center;">
+                        {% endif %}
+                       
+                    </div>      
+                
+            </div>
+        </div>
+                        {% if kho != 0 %}
+                       
+                       
+            <div class="row" style="position:relative;"> 
+                <div class="col card col-sm-5" style="margin-left: 15px;text-align: center; background-color: #CCCCCC; position: relative;width: 200px;">
+                    <button type="submit "   style="background-color: transparent;border: none;color: black;width: 112%;margin-left: -15px;">
+                            <p style="margin-top:8px" ><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z"/>
+                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                              </svg>
+                              Thêm Vào Giỏ Hàng</p>
+                            </a>    
+                </div>
+            </div>
+
+            {%else%}
+            <div class="row" style="position:relative;"> 
+                <div class="col card col-sm-5" style="margin-left: 15px;text-align: center; background-color: #CCCCCC; position: relative;width: 200px;">
+                    <button type="submit " disabled   style="background-color: transparent;border: none;color: black;width: 112%;margin-left: -15px;">
+                            <p style="margin-top:8px" ><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z"/>
+                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                              </svg>
+                              Thêm Vào Giỏ Hàng</p>
+                            </a>    
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+        <div class="col col-sm-5">
+            <div class="form-floating">
+             <h5> Mô tả sản phẩm</h5>
+             <div  class="overflow-auto" style="height:260px">
+                <div class="col">
+                   <p class="text-break">
+                         {{sp.mo_ta}}
+
+                    </p> 
+
+                </div>
+            </div>
+                
+
+            </div>
+         </div>
+        </form>
+    {% endfor %}
+    <script>
+        function kiemtra(){
+            if( '{{user.username}}' == '' ){
+                alert("Bạn Chưa Đăng Nhập!!");
+                window.location="{% url 'dangnhap' %}";
+                return false;
+            }
+            else {
+                alert("Bạn Thêm Sản Phẩm Vào Giỏ Hàng Thành Công!!");
+                return true;
+            }
+        }
+    </script>
+
+    <div class="row">
+            <div class="col">
+                <br>
+                <div class="container px-0">
+                    <div class="row gx-4 ">
+                        
+                        {% for spcungloai in sanphamcungloai%}
+                      <div class="col-2 m-2 card" style="width:228px ;border: 1px solid #000000" >
+                        <div>
+                            <a href="{% url 'chitietsanpham' spcungloai.id %}" >   <div> <img src="/static/{{spcungloai.anh_san_pham}}" class="img-thumbnail" alt="Lỗi Tải Hình Ảnh" style ="width:250px;height:150px"/> </div> </a>   
+                        </div>
+                        <div style="max-height: 50px;">
+                            <a href="{% url 'chitietsanpham' spcungloai.id %}" style="" >
+                                <span class="d-inline-block text-truncate" style="color: #000000; max-width:200px;  font-weight: 650;">
+                                {{spcungloai.ten_san_pham}}</a> </span> 
+                        </div>
+                        
+                       {% if spcungloai.chitietsanpham1.all %}
+                       {% for spcungloaikhuyenmai in spcungloai.chitietsanpham1.all %}
+                       <span style="border : 2px solid red ;border-radius:10px; width: 85px;color:red;"> Giảm: {{ spcungloaikhuyenmai.khuyen_mai }}% </span>
+                         <p style="font-weight:500">Giá: <span style="text-decoration: line-through;color:red">{{spcungloai.gia}}</span> - {{spcungloaikhuyenmai.gia_khuyen_mai|stringformat:".0f"}} <span class="badge bg-secondary">đ</span> </p> 
+                        {% endfor %}
+                        
+                        {% else %}
+                        <p style="font-weight:500">    Giá: {{spcungloai.gia}}  <span class="badge bg-secondary">đ</span> </p>
+                      
+                        {% endif %}
+                    </div>
+
+                    {% endfor %}
+                    </div>
+                </div>
+                    
+                
+
+            </div>
+    </div>
+   
+    <form action="{% url 'chitietsanpham' sanpham.id %}" method="POST" > 
+        {% csrf_token %}
+        <div class="row " style="margin-top:15px ;">
+            <div class="col-sm-5 m" style="border: 1px solid #000000" >
+                <div class="form-floating">
+                    <textarea name="noidung" id="noidung" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px; width: 400px;"></textarea>
+                    <label for="floatingTextarea2"><div>Bình Luận Sản Phẩm.........................................................<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                        <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                      </svg>
+                    </div></label>
+                    <br/>
+                    <button type="submit" class="btn btn-outline-success" style="border-radius:25px;" onclick="return kiemtrabinhluan()">Bình Luận</button>
+                </div>
+            </div>
+            <div class="col-7 card overflow-auto"   style="max-height:270px;margin-left:15px ;border: 1px solid #000000; width: 540px; overflow-x:auto;
+            overflow-y:auto;">
+            {% if binhluan %}
+            {% for binhluan in binhluan %} 
+            {% if user.username == 'admin'  %}
+            <span class="text-break">  {{binhluan.noidung}}   <br/>
+                {{binhluan.khach_hang.first_name}}    {{binhluan.khach_hang.last_name}}  {{binhluan.create_at}}   <a href="{% url 'xoabinhluan' binhluan.id %}"> Xóa </a> 
+            </span> 
+            <br> 
+            {%else %}
+            <span class="text-break">  {{binhluan.noidung}}   <br/>
+                {{binhluan.khach_hang.first_name}}    {{binhluan.khach_hang.last_name}}  {{binhluan.create_at}}    
+            </span> 
+            <br> 
+            
+            {% endif %}  
+           
+            {% endfor %}
+            {% endif %}
+
+                
+            </div>
+       
+        
+    </div>
+    </form>
+
+
+    </div>
+   
+</div>
+<br>
+<br>
+
+<script>
+    function kiemtrabinhluan(){
+        if( '{{user.username}}' == '' ){
+            alert("Bạn Chưa Đăng Nhập!!");
+            window.location="{% url 'dangnhap' %}";
+            return false;
+        }
+        else {
+            alert('Bạn đã bình luận thành công')
+            
+        }
+
+    }
+</script>
+{% endblock %}

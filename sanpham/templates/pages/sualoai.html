@@ -1,0 +1,33 @@
+{% extends 'pages/quantri.html' %}
+{% load static %}
+{% block    title %} Sửa Loại Hàng {% endblock %} 
+{% block    css %}
+<link rel="stylesheet" href="{% static 'css/qtloai.css' %}" type="text/css">
+{% endblock %}
+{% block    content %}  
+        <div class="row" >
+            <h3>Xin Chào Bạn</h3>
+            <p>Loại Hàng</p>
+        </div>
+        <div class="row">
+            <form action="/sualoai/{{loai_ten.id}}/" class="form-contact" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3" style="width: 155px;">
+                    <label for="exampleFormControlInput1" class="form-label">Tên Loại Hàng</label>
+                    <input type="text" name="tenloaihang" placeholder="Loại Hàng" value="{{loai_ten.loai_ten}}" >
+                </div>
+                <input type="submit" value="Lưu">
+            </form>
+           
+        </div>
+       
+
+
+
+
+
+
+
+      </div>                 
+</div>     
+{% endblock %}

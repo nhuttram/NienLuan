@@ -1,0 +1,122 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block title %}Khách Hàng - Đơn Hàng {% endblock %}
+{% block css %} 
+<link rel="stylesheet" href="{% static 'css/dangnhap.css' %}" type="text/css">
+<link rel="shortcut icon" type="image/png" href="{% static 'anh/logo-login.png' %}"/>
+{% endblock %}
+{% block urlphancap %} 
+          <li class="breadcrumb-item"><a href="{% url 'index' %}" style="text-decoration: none; color: black;" >Trang Chủ</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'donhang' %}" style="text-decoration: none; color: black;" >Đơn Hàng</a></li>
+          <li class="breadcrumb-item"><a href="#" style="text-decoration: none; color: black;" >Chi Tiết Đơn Hàng</a></li>
+{% endblock %}
+{% block content %}
+<!-- danh mục và sản phẩm -->
+<div class="container-fluid">
+    <div class="row" style="margin-left: 102.5px;width: 1150px">
+        <div class="col-sm-6">
+            <h4>Chi Tiết Đơn Hàng</h4>
+        </div>
+        <div class="col-sm-6">
+            <p style="float: right;">Bạn muốn mua thêm sản phẩm?<a href="{% url 'dangki' %}" style="text-decoration: none">Mua </a> tại đây</p>
+        </div>
+    </div>
+
+    <div class="row" style="border: 2px groove #FFFFFFFF;width: 1150px;margin-left: 102.5px;text-align:center;background-color: #FFFFFFFF;">
+        <div class="col" style=" position: relative;">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 90px">Đơn hàng</th>
+                    <th scope="col" style="width: 290px">Sản phẩm</th>
+                    <th scope="col">Ảnh sản phẩm</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col">Giảm giá</th>
+                    
+                    <th scope="col">Số Lượng</th>
+                    <th scope="col">Ngày đặt hàng</th>
+                
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for chitietdathang in chitietdathang %}
+                  <tr>
+                   
+                    <td>{{chitietdathang.dat_hang.id}}</td>
+                    <td>
+                        {{chitietdathang.san_pham.ten_san_pham}}
+                    </td>
+                  
+
+                    <td>
+                        <img  class="img-thumbnail anh1" src="/static/{{chitietdathang.san_pham.anh_san_pham}}" alt="Loi Tai Anh" style="width: 220px;height: 150px;max-width: 170px;max-height: 100px;">
+                    </td>
+
+                    <td>
+                        {{chitietdathang.san_pham.gia}} đ
+ 
+                    </td>
+                    <td>
+                        {% if chitietdathang.giam_gia != None %}
+                             {{chitietdathang.giam_gia}} %
+                        {% else %}
+                            0 %
+                        {% endif %}
+ 
+                    </td>
+                    <td>
+                        {{chitietdathang.so_luong}}
+                    </td>
+                  
+                    <td>
+                      {{chitietdathang.dat_hang.create_at}}
+                    </td>
+                   
+
+                  </tr>
+            
+                  {% endfor %}
+                  <tr  >
+                      <td  colspan="5" style="color: #BB0000;font-weight:600"> 
+                          <span> 
+                           {% if dathang1.trang_thai_dat_hang == 'chua_xac_nhan' %}
+                           Đơn hàng chưa xác nhận
+                           {% elif dathang1.trang_thai_dat_hang == 'da_xac_nhan' %}
+                           Đơn hàng chưa xác nhận -> Đã xác nhận 
+                           {% elif dathang1.trang_thai_dat_hang == 'da_giao_hang' %}
+                           Đơn hàng chưa xác nhận -> Đã xác nhận -> Đã giao hàng 
+                           {% else %}
+                           Đơn hàng của bạn đã bị hủy
+                           {% endif %}
+                        </span>
+                      </td>
+                      <td colspan="5">
+                       <a href="{% url 'donhang' %}"><button style="float: right;"  type="button" class="btn btn-secondary">Quay lại trang đơn hàng</button> </a> 
+                      </td>
+                  </tr>
+                </tbody>
+              </table>
+         
+           
+                  
+               
+           
+           
+        
+       
+    </div>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<br/>
+
+
+
+
+
+
+    
+{% endblock %}

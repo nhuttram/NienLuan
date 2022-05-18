@@ -1,0 +1,36 @@
+#id_username {
+    position: absolute;
+    right: 95px;
+    width: 230px;
+}
+#id_email {
+    position: absolute;
+    right: 95px;
+    width: 230px;
+
+}
+#id_matkhau1 {
+    position: absolute;
+    right: 95px;
+    width: 230px;
+}
+#id_matkhau2 {
+    position: absolute;
+    right: 95px;
+    width: 230px;
+}
+#dangky{
+    position: absolute;
+    right: 135px;
+    width: 250px;
+    height: 40px;
+    background-color: #F57224;
+    color: #FFFFFFFF;
+    border: none;
+}
+.errorlist{
+    margin-left: -5px;
+}
+.errorlist li {
+    color: red;
+}

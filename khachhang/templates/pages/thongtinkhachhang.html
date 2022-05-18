@@ -1,0 +1,102 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block title %}Cập Nhật Thông Tin {% endblock %}
+{% block css %} 
+<link rel="stylesheet" href="{% static 'css/sanpham.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/dangnhap.css' %}" type="text/css">
+<link rel="shortcut icon" type="image/png" href="{% static 'anh/logo-login.png' %}"/>
+{% endblock %}
+{% block urlphancap %} 
+          <li class="breadcrumb-item"><a href="{% url 'index' %}" style="text-decoration: none; color: black;" >Trang Chủ</a></li>
+          <li class="breadcrumb-item"><a href="#" style="text-decoration: none; color: black;" >Khách Hàng</a></li>
+          <li class="breadcrumb-item"><a href="#" style="text-decoration: none; color: black;" >Cập Nhật Thông Tin</a></li>
+{% endblock %}
+{% block content %}
+<!-- danh mục và sản phẩm -->
+<div class="container-fluid">
+    <div class="row" style="margin-left: 222.5px;width: 900px">
+        <div class="col-sm-6">
+            <h4>Cập Nhật Thông Tin Cá Nhân</h4>
+            
+        </div>
+        <div class="col-sm-6">
+            <p style="float: right;">Bạn muốn đăng kí thêm tài khoản?<a href="{% url 'dangki' %}" style="text-decoration: none">Đăng ký </a> tại đây</p>
+        </div>
+    </div>
+
+    <div class="row" style="border: 2px groove #FFFFFFFF;height: 400px;width: 900px;margin-left: 232.5px;text-align:center;background-color:#FFFFFF">
+        <div class="col" style=" position: relative;">
+            <br>
+            <form method="POST" action ="{% url 'thongtinkhachhang' %}" >
+                {% csrf_token %}
+                <div class="mb-4">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <label for="exampleInputEmail1" class="form-label">First Name</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input style="background-color:#C0C0C0" required  type="text" id="first_name" name="first_name" value="{{khachhang.first_name}}" class="form-control"  placeholder="First Name"  aria-describedby="emailHelp">
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="exampleInputEmail1" class="form-label">Last Name</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input style="background-color:#C0C0C0" required  type="text" id="last_name" name="last_name" value="{{khachhang.last_name}}" class="form-control"  placeholder="Last Name"   aria-describedby="emailHelp">
+                        </div>
+                    </div>
+                </div>
+                    <div class="mb-4">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input style="background-color:#C0C0C0" required  type="email" id="emailthongtin" name="emailthongtin" value="{{khachhang.email}}" class="form-control"  placeholder="Email"  id="exampleInputEmail1" aria-describedby="emailHelp">
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="exampleInputPassword1" class="form-label">Số Điện Thoại</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="tel" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" placeholder="123-45-678" style="background-color:#C0C0C0" required id="sdt" name="sdt"  value="{{khachhang.so_dien_thoai}}"  class="form-control" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label for="exampleInputPassword1"  class="form-label">Địa Chỉ</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <input class="form-control" required style="width: 70%;background-color:#C0C0C0" id="diachi" name="diachi"  value="{{khachhang.dia_chi}}"   type="text" placeholder="Địa Chỉ" aria-label="default input example">
+                            </div>
+                        </div>
+                       
+                       
+                    </div>
+                    <br/>
+                    <button type="submit" id="submit" name="submit" style="width: 30%;color:	#000000;" class="btn btn-primary">Cập Nhật</button>
+                        {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags  == "alert-infor" %}
+                            <script> 
+                                alert("Số điện thoại của bạn không chính xác");
+                            </script>
+                           {% else %}
+                            <script> 
+                                alert("Bạn cập nhật thông tin thành công");
+                            </script>
+                            {% endif %}
+                        {% endfor %}
+                        {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+    
+{% endblock %}

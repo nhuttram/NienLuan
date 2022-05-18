@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Đơn Hàng</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link rel="shortcut icon" type="image/png" href="{% static 'anh/chitietdon.png' %}"/>
+
+</head>
+<body style="background-color:#DDDDDD;">
+<br/><br/>
+    <div class="container" style="background-color:#FFFFFF;width:65% ; border-radius:15px">
+        <div class="row">
+            <div class="col">
+              <h5>Chi tiết đơn hàng số <span style="color:#CCCC00;"> {{dat_hang.id}}</span></h5>
+            </div>
+            
+          </div>
+          {%for chitiet in chitiet_donhang%}
+        <div class="row">
+          <div class="col-sm-5" style="">
+            {{chitiet.san_pham.ten_san_pham}}
+          </div>
+          <div class="col" style="">
+            <img  class="img-thumbnail anh1" src="/static/{{chitiet.san_pham.anh_san_pham}}" alt="Loi Tai Anh" style="width: 120px;height: 100px;max-width: 120px;max-height: 100px;">
+   
+          </div>
+          <div class="col" style="">
+            Số lượng: {{chitiet.so_luong}}
+          </div>
+          <div class="col" style="">
+            {{chitiet.san_pham.gia}}đ <br/>
+            Giảm 
+            {% if chitiet.giam_gia != NONE %}
+                {{chitiet.giam_gia}} %
+            {% else %} 
+                0 %
+            {% endif %}
+          </div>
+        </div>
+        {%endfor%}
+        <br/>
+        <div class="row">
+            <div class="col-sm-4"   >
+                <ion-icon name="person" style="font-size: 25px;"></ion-icon></ion-icon> <span>{{khachhang.first_name}} {{khachhang.last_name}} </span>
+            </div>
+            <div class="col-sm-3"  >
+                <ion-icon name="call" style="font-size: 25px;"></ion-icon> <span> {{khachhang.so_dien_thoai}} </span>
+            </div>
+            <div class="col-sm-5"  >
+                <ion-icon name="mail" style="font-size: 34px;"></ion-icon>   <span >{{khachhang.email}} </span>
+            </div>
+            
+          </div>
+
+        <div class="row">
+          <div class="col" >
+            <ion-icon name="home" style="font-size: 25px;"></ion-icon> <span>Địa chi: {{khachhang.dia_chi}}</span>
+          </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col">
+              <h6>Tổng đơn hàng</h6>
+            </div>
+            <div class="col" >
+                <h6 style="float: right;color:red"> {{dat_hang.tongtien|stringformat:".0f"}} đ</h6>
+              </div>
+            
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col">
+                <button    style="float: right;width: 150px;" onclick="window.print()"    type="button" class="btn btn-info">In đơn </button>
+            </div>
+          </div>
+          <br/>
+
+      </div>
+    
+</body>
+</html>
